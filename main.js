@@ -16,6 +16,13 @@ window.addEventListener('DOMContentLoaded', () => {
     const stored = localStorage.getItem('library');
     if(stored) {
         bookDisplay.innerHTML = stored;
+
+        const removeBtn = document.getElementById('remove');
+        removeBtn.addEventListener('click', (e) => {
+            console.log(e.target, library);
+
+            // TODO Traverse DOM looking for parent, iterate over array to match target book name with object key name and remove from it's index
+        })
     }
 })
 
@@ -60,8 +67,8 @@ function addBook(arr) {
                 </div>
             </article>`
         })
-
         displayBooks = displayBooks.join('');
         bookDisplay.innerHTML = displayBooks;
+        localStorage.setItem('library', displayBooks);
     } else console.log('nothing here');
 }
