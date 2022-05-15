@@ -1,0 +1,158 @@
+/* Custom variables */
+@import url('https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@400;500;700&family=Rubik:wght@400;500;700&display=swap');
+
+:root {
+    --clr-test: #fff;
+}
+
+/* Body HTML */
+html {
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Hind Madurai', 'Rubik', sans-serif;
+    font-size: 18px;
+    background-color:aliceblue;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1.5em 1.5em 1.5em;
+}
+
+.app-contact {
+    width: 20%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.contact-link {
+    text-decoration: none;
+}
+
+/* Section data */
+.app-data {
+    display: flex;
+    justify-content: center;
+}
+
+.app-form {
+    display: flex;
+    flex-direction: column;
+    width: 25vw;
+}
+
+.form-fieldgroup {
+    display: flex;
+    flex-direction: column;
+    outline: none;
+    border: none;
+    padding: 0;
+    margin: 0 0 0 0;
+}
+
+.form-input {
+    margin-bottom: .85em;
+}
+
+.form-review {
+    margin-top: .5em;
+    width: 100%;
+    height: 150px;
+    resize: none;
+}
+
+.form-btn {
+    width: 15vw;
+    height: 35px;
+    align-self: center;
+    margin-top: 1.5em;
+    cursor: pointer;
+    border: none;
+    text-transform: uppercase;
+    background-color:lightgreen;
+    color: black;
+    font-weight: 700;
+    letter-spacing: .5px;
+    box-shadow: 5px 5px black;
+}
+
+/* Section library */
+.app-library {
+    padding: 0 1em;
+    margin-top: 2.5em;
+}
+
+.book-display {
+    display: grid;
+    grid-gap: 1em;
+    border-top: 2px solid black;
+}
+
+.book {
+    display: flex;
+    justify-content: space-between;
+    background-color: #fff;
+}
+
+.book-details {
+    display: flex;
+    width: 100%;
+}
+
+.book-cover {
+    max-width: 250px;
+}
+
+.cover-img {
+    width: 100%;
+    height: 100%;
+}
+
+.book-data {
+    width: 100%;
+    margin-left: 1em;
+    padding-right: 2.5em;
+}
+
+.book-controls {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding-right: 2em;
+}
+
+.ctrl-btn {
+    width: 100px;
+    height: 40px;
+    border-radius: .75em;
+    border: none;
+    box-shadow: 5px 5px black;
+    text-transform: uppercase;
+    letter-spacing: .65px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#remove {
+    background-color: hsl(0, 85%, 49%);
+    color: #fff;
+}
+
+#edit {
+    background-color:hsl(240, 84%, 66%);
+    color: #fff;
+}
