@@ -1,6 +1,5 @@
 const form = document.getElementById('bookForm');
 const bookDisplay = document.querySelector('.book-display');
-let library = [];
 
 // Display entries on page load
 window.addEventListener('DOMContentLoaded', () => {
@@ -13,15 +12,34 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     // Display book data
-    const stored = localStorage.getItem('library');
+    const stored = localStorage.getItem('dynamic');
+
     if(stored) {
         bookDisplay.innerHTML = stored;
 
-        const removeBtn = document.getElementById('remove');
-        removeBtn.addEventListener('click', (e) => {
-            console.log(e.target, library);
+        const removeBtn = document.querySelectorAll('.removeBtn');
+        console.log(removeBtn)
+        removeBtn.forEach((btn) => {
+            btn.addEventListener('click', (e) => {
+                console.log(library);
 
-            // TODO Traverse DOM looking for parent, iterate over array to match target book name with object key name and remove from it's index
+                // Traverse DOM looking for book name  and remove from it's index
+                const a = e.target.parentElement.parentElement;
+                const b = a.children[0].children[1].children[0];
+                const c = b.textContent;
+
+                // Iterate over array to match target book name with object key name stored in array
+                if(library.length > 0) {
+                    library.forEach((book) => {
+                        if(book.name === c) {
+                            console.log('removed')
+                            // Remove item from array
+                            const index = library.indexOf(book);
+                            // library.splice(index, 1);
+                        }
+                    })
+                }
+            })
         })
     }
 })
@@ -45,6 +63,16 @@ function pushToArr(arr, data) {
     localStorage.setItem('newBookData', JSON.stringify(arr));
 }
 
+// Clear inputs
+function clearInputs() {
+    const inputs = document.querySelectorAll('.form-input');
+    inputs.forEach((input) => {
+        return input.value = '';
+    })
+
+    location.reload();
+}
+
 // DOM manipulation when adding a new entry
 function addBook(arr) {
     if(arr.length > 0) {
@@ -57,18 +85,27 @@ function addBook(arr) {
                     </div>
                     <div class="book-data">
                     <h3 id="nameOfBook" class="book-name">${book.name}</h3>
-                    <h4 id="nameOfAuthor" class="'book-author">${book.author}r</h4>
+                    <h4 id="nameOfAuthor" class="'book-author">${book.author}</h4>
                     <p id="reviewOfBook" class="book-review">${book.review}</p>
                     </div>
                 </div>
                 <div class="book-controls">
-                    <button id="remove" class="ctrl-btn">Remove</button>
-                    <button id="edit" class="ctrl-btn">Edit</button>
+                    <button id="remove" class="ctrl-btn removeBtn">Remove</button>
+                    <button id="edit" class="ctrl-btn editBtn">Edit</button>
                 </div>
             </article>`
         })
         displayBooks = displayBooks.join('');
         bookDisplay.innerHTML = displayBooks;
-        localStorage.setItem('library', displayBooks);
+
+        // Store into local storage
+
+        // TODO Fix book display
+
+        // arr.forEach((book, i) => {
+        //     localStorage.setItem(`${i}`, displayBooks)
+        // })
+
+        clearInputs();
     } else console.log('nothing here');
 }
