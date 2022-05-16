@@ -5,6 +5,48 @@
     --clr-test: #fff;
 }
 
+/* Active states */
+.contact-link:hover,
+.contact-link:focus,
+.contact-link:focus-visible {
+    color: hsl(240, 84%, 45%);
+}
+
+.form-btn:hover,
+.form-btn:focus,
+.form-btn:focus-visible {
+    box-shadow: 2.5px 2.5px lightgreen;
+    color: lightgreen;
+    background-color: black;
+    transition: all 255ms ease;
+}
+
+.ctrl-btn:hover,
+.ctrl-btn:focus,
+.ctrl-btn:focus-visible {
+    box-shadow: 2.5px 2.5px black;
+    transition: all 255ms ease;
+}
+
+#remove:hover,
+#remove:focus,
+#remove:focus-visible {
+    background-color:hsl(0, 85%, 35%);
+}
+
+#edit:hover,
+#edit:focus,
+#edit:focus-visible {
+    background-color:hsl(240, 84%, 52%);
+}
+
+.form-input:focus,
+.form-input:focus-visible,
+.form-review:focus,
+.form-review:focus-visible {
+    outline: none;
+}
+
 /* Body HTML */
 html {
     box-sizing: border-box;
