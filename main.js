@@ -11,36 +11,17 @@ window.addEventListener('DOMContentLoaded', () => {
         library = JSON.parse(localStorage.getItem('newBookData'))
     }
 
+    console.log(localStorage)
+
     // Display book data
-    const stored = localStorage.getItem('dynamic');
+    if(localStorage.length > 1) {
+        bookDisplay.innerHTML = localStorage.getItem(localStorage.key(0));
 
-    if(stored) {
-        bookDisplay.innerHTML = stored;
-
+        // Remove
         const removeBtn = document.querySelectorAll('.removeBtn');
-        console.log(removeBtn)
-        removeBtn.forEach((btn) => {
-            btn.addEventListener('click', (e) => {
-                console.log(library);
+        removeBook(removeBtn);
 
-                // Traverse DOM looking for book name  and remove from it's index
-                const a = e.target.parentElement.parentElement;
-                const b = a.children[0].children[1].children[0];
-                const c = b.textContent;
-
-                // Iterate over array to match target book name with object key name stored in array
-                if(library.length > 0) {
-                    library.forEach((book) => {
-                        if(book.name === c) {
-                            console.log('removed')
-                            // Remove item from array
-                            const index = library.indexOf(book);
-                            // library.splice(index, 1);
-                        }
-                    })
-                }
-            })
-        })
+        // Edit
     }
 })
 
@@ -99,13 +80,37 @@ function addBook(arr) {
         bookDisplay.innerHTML = displayBooks;
 
         // Store into local storage
-
-        // TODO Fix book display
-
-        // arr.forEach((book, i) => {
-        //     localStorage.setItem(`${i}`, displayBooks)
-        // })
+        arr.forEach((book, i) => {
+            localStorage.setItem(`${i + 1}`, displayBooks)
+        })
 
         clearInputs();
     } else console.log('nothing here');
+}
+
+function removeBook(remove) {
+    remove.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            console.log(library);
+
+            // Traverse DOM looking for book name
+            const a = e.target.parentElement.parentElement;
+            const b = a.children[0].children[1].children[0];
+            const c = b.textContent;
+
+            // Iterate over array to match target book name with object key name stored in array
+            if(library.length > 0) {
+                library.forEach((book) => {
+                    if(book.name === c) {
+                        console.log('removed')
+                        // Remove item from array & storage
+                        const index = library.indexOf(book);
+                        library.splice(index, 1);
+                        localStorage.removeItem(localStorage.key(index));
+                        // 1 item in array won't get deleted fix in progress
+                    }
+                })
+            }
+        })
+    })
 }
