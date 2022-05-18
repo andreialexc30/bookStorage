@@ -102,12 +102,18 @@ function removeBook(remove) {
             if(library.length > 0) {
                 library.forEach((book) => {
                     if(book.name === c) {
-                        console.log('removed')
                         // Remove item from array & storage
                         const index = library.indexOf(book);
                         library.splice(index, 1);
+
+                        // Remove HTML from storage
                         localStorage.removeItem(localStorage.key(index));
-                        // 1 item in array won't get deleted fix in progress
+
+                        // Update storage after splice
+                        localStorage.setItem('newBookData', JSON.stringify(library));
+                        // bookDisplay.innerHTML = localStorage.getItem(localStorage.key(0));
+
+                        console.log('removed', library)
                     }
                 })
             }
