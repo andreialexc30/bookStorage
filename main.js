@@ -1,21 +1,26 @@
+// <!----------- APP CODE <!-----------
 const form = document.getElementById('bookForm');
 const bookDisplay = document.querySelector('.book-display');
 
 // Display entries on page load
 window.addEventListener('DOMContentLoaded', () => {
-    // Check if book data is in localStorage then populate array
+    // Check if book data is in localStorage then populate arrays
     const isBook = localStorage.getItem('newBookData');
     if(!isBook) {
-        library = []
+        library = [];
+        codeToDisplay = [];
     } else {
-        library = JSON.parse(localStorage.getItem('newBookData'))
+        library = JSON.parse(localStorage.getItem('newBookData'));
     }
 
     console.log(localStorage)
 
     // Display book data
     if(localStorage.length > 1) {
-        bookDisplay.innerHTML = localStorage.getItem(localStorage.key(0));
+        codeToDisplay = JSON.parse(localStorage.getItem('HTML'));
+        codeToDisplay.forEach((entry) => {
+            bookDisplay.innerHTML = entry;
+        })
 
         // Remove
         const removeBtn = document.querySelectorAll('.removeBtn');
@@ -32,27 +37,11 @@ form.addEventListener('submit', (e) => {
     const data = Object.fromEntries(new FormData(e.target).entries());
 
     // Push to array
-    pushToArr(library, data);
+    pushToArr(library, data, 'newBookData');
 
     // HTML Code that gets displayed with each new book entry
     addBook(library);
 })
-
-// Push data to array
-function pushToArr(arr, data) {
-    arr.push(data);
-    localStorage.setItem('newBookData', JSON.stringify(arr));
-}
-
-// Clear inputs
-function clearInputs() {
-    const inputs = document.querySelectorAll('.form-input');
-    inputs.forEach((input) => {
-        return input.value = '';
-    })
-
-    location.reload();
-}
 
 // DOM manipulation when adding a new entry
 function addBook(arr) {
@@ -77,12 +66,9 @@ function addBook(arr) {
             </article>`
         })
         displayBooks = displayBooks.join('');
-        bookDisplay.innerHTML = displayBooks;
 
-        // Store into local storage
-        arr.forEach((book, i) => {
-            localStorage.setItem(`${i + 1}`, displayBooks)
-        })
+        // Stored HTML code
+        pushToArr(codeToDisplay, displayBooks, 'HTML');
 
         clearInputs();
     } else console.log('nothing here');
@@ -102,21 +88,43 @@ function removeBook(remove) {
             if(library.length > 0) {
                 library.forEach((book) => {
                     if(book.name === c) {
-                        // Remove item from array & storage
-                        const index = library.indexOf(book);
-                        library.splice(index, 1);
-
-                        // Remove HTML from storage
-                        localStorage.removeItem(localStorage.key(index));
-
-                        // Update storage after splice
-                        localStorage.setItem('newBookData', JSON.stringify(library));
-                        // bookDisplay.innerHTML = localStorage.getItem(localStorage.key(0));
-
-                        console.log('removed', library)
+                        removeEntry(book);
+                        // console.log('removed', library, codeToDisplay)
                     }
                 })
             }
         })
     })
+}
+
+// <!----------- Helper functions <!-----------
+
+// Push data to array
+function pushToArr(arr, data, key) {
+    arr.push(data);
+    localStorage.setItem(key, JSON.stringify(arr));
+}
+
+// Clear inputs
+function clearInputs() {
+    const inputs = document.querySelectorAll('.form-input');
+    inputs.forEach((input) => {
+        return input.value = '';
+    })
+
+    location.reload();
+}
+
+// Match and remove
+function removeEntry(entry) {
+    // Remove item from array & storage
+    const index = library.indexOf(entry);
+    library.splice(index, 1);
+    codeToDisplay.splice(index, 1);
+
+    // Update storage after splice
+    localStorage.setItem('newBookData', JSON.stringify(library));
+    localStorage.setItem('HTML', JSON.stringify(codeToDisplay));
+
+    location.reload();
 }
