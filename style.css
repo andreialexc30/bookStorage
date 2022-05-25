@@ -141,7 +141,6 @@ body {
 .book-display {
     display: grid;
     grid-gap: 1em;
-    border-top: 2px solid black;
 }
 
 .book {
