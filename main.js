@@ -1,6 +1,7 @@
 // <!----------- APP CODE <!-----------
 const form = document.getElementById('bookForm');
 const bookDisplay = document.querySelector('.book-display');
+const inputs = document.querySelectorAll('.form-input');
 
 // Display entries on page load
 window.addEventListener('DOMContentLoaded', () => {
@@ -13,7 +14,7 @@ window.addEventListener('DOMContentLoaded', () => {
         library = JSON.parse(localStorage.getItem('newBookData'));
     }
 
-    console.log(localStorage)
+    // console.log(localStorage)
 
     // Display book data
     if(localStorage.length > 1) {
@@ -30,17 +31,15 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 })
 
+
 form.addEventListener('submit', (e) => {
     e.preventDefault();
 
     // Get form data
     const data = Object.fromEntries(new FormData(e.target).entries());
 
-    // Push to array
-    pushToArr(library, data, 'newBookData');
-
-    // HTML Code that gets displayed with each new book entry
-    addBook(library);
+    // Validate entry then display
+    validateEntry(library, data);
 })
 
 // DOM manipulation when adding a new entry
@@ -77,8 +76,6 @@ function addBook(arr) {
 function removeBook(remove) {
     remove.forEach((btn) => {
         btn.addEventListener('click', (e) => {
-            console.log(library);
-
             // Traverse DOM looking for book name
             const a = e.target.parentElement.parentElement;
             const b = a.children[0].children[1].children[0];
@@ -89,7 +86,6 @@ function removeBook(remove) {
                 library.forEach((book) => {
                     if(book.name === c) {
                         removeEntry(book);
-                        // console.log('removed', library, codeToDisplay)
                     }
                 })
             }
@@ -105,16 +101,6 @@ function pushToArr(arr, data, key) {
     localStorage.setItem(key, JSON.stringify(arr));
 }
 
-// Clear inputs
-function clearInputs() {
-    const inputs = document.querySelectorAll('.form-input');
-    inputs.forEach((input) => {
-        return input.value = '';
-    })
-
-    location.reload();
-}
-
 // Match and remove
 function removeEntry(entry) {
     // Remove item from array & storage
@@ -127,4 +113,28 @@ function removeEntry(entry) {
     localStorage.setItem('HTML', JSON.stringify(codeToDisplay));
 
     location.reload();
+}
+
+// Clear inputs
+function clearInputs() {
+    inputs.forEach((input) => {
+        return input.value = '';
+    })
+
+    location.reload();
+}
+
+// Validate inputs
+function validateEntry(library, data) {
+    inputs.forEach((input) => {
+        if(!input.value || input.value === '') {
+            return
+        } else {
+            // Push to array
+            pushToArr(library, data, 'newBookData');
+
+            // Display on page
+            addBook(library);
+        };
+    })
 }
