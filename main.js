@@ -28,6 +28,8 @@ window.addEventListener('DOMContentLoaded', () => {
         removeBook(removeBtn);
 
         // Edit
+        const editBtn = document.querySelectorAll('.editBtn');
+        editReview(editBtn);
     }
 })
 
@@ -93,6 +95,22 @@ function removeBook(remove) {
     })
 }
 
+function editReview(edit) {
+    edit.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            // Create modal upon clicking
+            createModal();
+
+            // Get updated form data
+            const form = document.getElementById('modalForm');
+            form.addEventListener('submit', (e) => {
+                const updatedData = Object.fromEntries(new FormData(e.target).entries());
+                console.log(updatedData);
+            })
+        })
+    })
+}
+
 // <!----------- Helper functions <!-----------
 
 // Push data to array
@@ -137,4 +155,52 @@ function validateEntry(library, data) {
             addBook(library);
         };
     })
+}
+
+// Create edit modal
+function createModal() {
+    // Create modal children
+
+    // Init aside HTML element
+    const aside = document.createElement('aside');
+    aside.classList.add('modal-show');
+
+    // Init h5
+    const h5 = document.createElement('h5');
+    h5.classList.add('modal-heading');
+    h5.textContent = 'update review';
+
+    // Init form
+    const form = document.createElement('form');
+    form.classList.add('modal-form');
+    form.id = 'modalForm'
+
+    // Init label
+    const label = document.createElement('label');
+    label.classList.add('modal-label');
+    label.htmlFor = 'newReview';
+
+    // Init textarea
+    const textarea = document.createElement('textarea');
+    textarea.classList.add('form-review');
+    textarea.classList.add('modal-review');
+    textarea.id = 'newReview';
+    textarea.form = 'modalForm';
+    textarea.name = 'updateReview';
+    textarea.placeholder = 'Update your review?';
+
+    // Init submit form button
+    const submit = document.createElement('button');
+    submit.classList.add('form-btn');
+    submit.id = 'update';
+    submit.type = 'submit';
+    submit.textContent = 'update';
+
+    // Make nodelist of children
+    form.append(label, textarea, submit);
+    aside.append(h5, form);
+
+    // Hook children to parent
+    const modalParent = document.querySelector('.book-data');
+    modalParent.appendChild(aside);
 }
