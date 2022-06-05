@@ -78,19 +78,10 @@ function addBook(arr) {
 function removeBook(remove) {
     remove.forEach((btn) => {
         btn.addEventListener('click', (e) => {
-            // Traverse DOM looking for book name
-            const a = e.target.parentElement.parentElement;
-            const b = a.children[0].children[1].children[0];
-            const c = b.textContent;
-
             // Iterate over array to match target book name with object key name stored in array
             if(library.length > 0) {
-                library.forEach((book) => {
-                    if(book.name === c) {
-                        removeEntry(book);
-                    }
-                })
-            }
+                entryHandler(e, removeEntry);
+            } else return;
         })
     })
 }
@@ -101,12 +92,16 @@ function editReview(edit) {
             // Create modal upon clicking
             createModal();
 
-            // Get updated form data
-            const form = document.getElementById('modalForm');
-            form.addEventListener('submit', (e) => {
-                const updatedData = Object.fromEntries(new FormData(e.target).entries());
-                console.log(updatedData);
+            // Close modal
+            const closeBtn = document.querySelector('.modal-close-btn');
+            const modalParent = document.querySelector('.book-data');
+            const aside = document.querySelector('.modal-show');
+            closeBtn.addEventListener('click', () => {
+                modalParent.removeChild(aside);
             })
+
+            // do something
+            entryHandler(e, editEntry);
         })
     })
 }
@@ -133,6 +128,34 @@ function removeEntry(entry) {
     location.reload();
 }
 
+// Match and edit
+function editEntry() {
+    console.log('matched')
+
+    // Get updated form data
+    const form = document.getElementById('modalForm');
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const updatedData = Object.fromEntries(new FormData(e.target).entries());
+        if(updatedData) {
+            console.log(updatedData);
+
+
+            modalParent.removeChild(aside);
+        }
+    })
+}
+
+// Match and handle book
+function entryHandler(e, callback) {
+    const matchedEl = domTraversal(e);
+    library.forEach((book) => {
+        if(book.name === matchedEl) {
+            callback(book);
+        } else console.log('error');
+    })
+}
+
 // Clear inputs
 function clearInputs() {
     inputs.forEach((input) => {
@@ -157,10 +180,16 @@ function validateEntry(library, data) {
     })
 }
 
+// Traverse DOM
+function domTraversal(e) {
+    const a = e.target.parentElement.parentElement;
+    const b = a.children[0].children[1].children[0];
+    const c = b.textContent;
+    return c;
+}
+
 // Create edit modal
 function createModal() {
-    // Create modal children
-
     // Init aside HTML element
     const aside = document.createElement('aside');
     aside.classList.add('modal-show');
@@ -169,6 +198,13 @@ function createModal() {
     const h5 = document.createElement('h5');
     h5.classList.add('modal-heading');
     h5.textContent = 'update review';
+
+    // Init span and close btn
+    const span = document.createElement('span');
+    const closeBtn = document.createElement('button');
+    span.classList.add('h5-close');
+    closeBtn.classList.add('modal-close-btn');
+    closeBtn.textContent = 'X';
 
     // Init form
     const form = document.createElement('form');
@@ -186,7 +222,7 @@ function createModal() {
     textarea.classList.add('modal-review');
     textarea.id = 'newReview';
     textarea.form = 'modalForm';
-    textarea.name = 'updateReview';
+    textarea.name = 'review';
     textarea.placeholder = 'Update your review?';
 
     // Init submit form button
@@ -197,6 +233,8 @@ function createModal() {
     submit.textContent = 'update';
 
     // Make nodelist of children
+    span.append(closeBtn);
+    h5.append(span);
     form.append(label, textarea, submit);
     aside.append(h5, form);
 
