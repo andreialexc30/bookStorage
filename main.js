@@ -14,8 +14,6 @@ window.addEventListener('DOMContentLoaded', () => {
         library = JSON.parse(localStorage.getItem('newBookData'));
     }
 
-    // console.log(localStorage)
-
     // Display book data
     if(localStorage.length > 1) {
         codeToDisplay = JSON.parse(localStorage.getItem('HTML'));
@@ -100,7 +98,7 @@ function editReview(edit) {
                 modalParent.removeChild(aside);
             })
 
-            // do something
+            // Edit review
             entryHandler(e, editEntry);
         })
     })
@@ -134,12 +132,21 @@ function editEntry() {
 
     // Get updated form data
     const form = document.getElementById('modalForm');
+    const modalParent = document.querySelector('.book-data');
+    const aside = document.querySelector('.modal-show');
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         const updatedData = Object.fromEntries(new FormData(e.target).entries());
         if(updatedData) {
-            console.log(updatedData);
+            // Map over arr and change key value
+            library.map((storedBook) => {
+                if(storedBook.hasOwnProperty('review')) {
+                    storedBook.review = updatedData.review;
+                    localStorage.setItem('newBookData', JSON.stringify(library));
 
+                    // TODO: replace html code with new edited entry
+                } else console.log('no such thing')
+            })
 
             modalParent.removeChild(aside);
         }
